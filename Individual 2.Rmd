@@ -1,0 +1,172 @@
+---
+title: "lab2"
+author: "Lisa McDaniel"
+date: "9/8/2020"
+output: html_document
+---
+<font size="6"> **Reading the Data:**
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment=NA)
+```
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco) 
+```
+<font size="6"> **Searching for the Best Chocolates:**
+<font size="3">
+
+1.	How are the ratings distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.
+```{r echo=FALSE, fig.width=10}
+##names(choco)
+chocoHist <- hist(choco$Rating, main = "Rating Distribution", 
+                  xlab="Rating")
+```
+
+**Rating Histogram**
+I don't konw that you can say that the data is left skewed.  I think anything less then 2.5 should be considered an outlier.
+
+```{r echo = FALSE}
+chocoBox <- boxplot(choco$Rating, main= "Rating Boxplot", 
+                    ylab="Rating")
+```
+
+**Rating Boxplot**
+The median is roughly 3.25, maximum value is 4 and the minimum value is 2.25; confirms that there are 4 outliers; Q3=3.5, Q1=3; IQR=0.5 which indicates that the spread of the data is pretty narrow.
+
+2.	How does the number of ratings depend on the year? Draw a bar chart of the number of reports.
+
+```{r echo = FALSE, fig.width=10}
+##summary(choco$Date)
+rateCt <- table(choco$Date)
+
+barplot(rateCt, main="Number of Rating by Year", names.arg=c("2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"), xlab="Year", ylab="Number of Ratings")
+```
+
+**Observations**
+It appears that the number of ratings has steadily increased since the project began in 2006, peaking in 2015.  The number ratings between 2016 - 2019 (excluding 2017) are similar.  I would consider the number of ratings in 2020 as incomplete and would not make any observations for this year.
+
+3.	Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain.
+
+**Observations**  The boxplot shows that between 60 and 88% cocoa the rating are generally over 3.  Cocoa % above 88 and below 60 have lower rating.
+```{r echo = FALSE, fig.width=14}
+##summary(choco$Cocoa_Percent)
+
+##summary(choco$Rating)
+boxplot(choco$Rating~choco$Cocoa_Percent, main="Cocoa Percent Rating", xlab="Cocao Percent", ylab = "Rating")
+
+```
+
+4.	How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain.
+
+
+<font size="3"> **Top 5 Most Flavorable Characteristics (rating>= 3**
+
+*Charactersitic 1:*
+There are 1768 records that have a rating >=3. That includes 372 flavors in Characteristic 1; 49 flavors in charactersitc 1 have a rating >=4 including *oily, sweet, delicate* and *strong spice*.  
+```{r echo=FALSE, results="hide"}
+GoodChar <- choco[(choco$Rating >= 3) , ]
+Good1 <- unique(GoodChar$Characteristics1)
+Good1
+
+GoodCharCt1 <- table(GoodChar$Rating)
+GoodCharCt1
+barplot(GoodCharCt1, main="Ratings Greater Than 3", names.arg= c("3", "3.25", "3.5", "3.75" , "4"), ylab="Number of Ratings", xlab="Rating")
+```
+
+*Charactersitic 2:*  Of the 1768 records, that includes 412 flavors in Characteristic 2; 68 flavors in charactersitc 1 have a rating >=4 including *blackberry, vegetal, fatty* and *mellon*.  
+```{r echo=FALSE, results="hide"}
+GoodChar2 <- choco[(choco$Rating >= 3) , ]
+Good2 <- unique(GoodChar2$Characteristics2)
+Good2
+```
+*Charactersitic 3:*   Of the 1768 records, that includes 292 flavors in Characteristic ; 47 flavors in charactersitc 3 have a rating >=4 including *carmel, tangerine, brownie* and *smoke*
+```{r echo=FALSE, results="hide"}
+GoodChar3 <- choco[(choco$Rating >= 4) , ]
+Good3 <- unique(GoodChar3$Characteristics3)
+Good3
+```
+*Charactersitic 4:*  Of the 1768 records, that includes 71 flavors in Characteristic 4; 12 flavors in charactersitc 4 have a rating >=4 including *raspberry, banana, rich* and *cocoa*
+```{r echo=FALSE, results="hide"}
+GoodChar4 <- choco[(choco$Rating >= 4) , ]
+Good4 <- unique(GoodChar4$Characteristics4)
+Good4
+```
+
+<font size="3"> **Top 5 Least Flavorable Characteristics (Rating <= 2)**
+
+*Charactersitic 1:*
+There are 35 flavors in Characteristic 1 that have a rating <=2.  Four of these flavors have a rating <=1: *bitter, chalky, this is not chocolate* and *pastey*.
+
+sweet, delicate* and *strong spice*.  
+```{r echo=FALSE, results="hide"}
+BadChar <- choco[(choco$Rating <= 2) , ]
+Bad1 <- unique(BadChar$Characteristics1)
+Bad1
+
+BadCharCt1 <- table(BadChar$Rating)
+BadCharCt1
+barplot(BadCharCt1, main="Ratings Less Than 2", names.arg= c("1", "1.5", "1.75" , "2"), ylab="Number of Ratings", xlab="Rating")
+```
+
+*Charactersitic 2:* 
+There are 39 flavors (1 NA) in Characteristic 2 that have a rating <=2.  Three of these flavors have a rating <=1: *cocoa, musty* and *strong off flavor*. 
+```{r echo=FALSE, results="hide"}
+BadChar <- choco[(choco$Rating <= 1) , ]
+Bad2 <- unique(BadChar$Characteristics2)
+Bad2
+```
+*Charactersitic 3:*
+There are 23 (1 identified as NA) flavors in Characteristic 3 that have a rating <=2.
+Only one flavor has a rating <=1: *very bitter*. 
+```{r echo=FALSE, results="hide"}
+BadChar <- choco[(choco$Rating <= 2) , ]
+Bad3 <- unique(BadChar$Characteristics3)
+Bad3
+```
+ *Charactersitic 4:*
+There 1 flavor in Characteristic 4 that has a rating <=2 and no flavors with a rating <= 1.
+```{r echo=FALSE, results="hide"}
+BadChar <- choco[(choco$Rating <= 1) , ]
+Bad4 <- unique(BadChar$Characteristics4)
+Bad4
+```
+
+5.	Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
+
+<font size="3"> **Analysis:  USA Chocolate**
+
+I got the summary statistics for the dataset and saw that there are 2312 records.  I filtered the original data to include only those records where the  *Location* was *U.S.A* and stored the 966 records in USAchoch.  I further filtered the data to include only those records where the  *Bean Origin* was also in the *U.S.A and stored the 28 records in USAbean.  I got the summary statistics for USABean and created plots showing the number of ratings per yeary and by cocoa percentage.
+
+Ratings began in 2006 but have not been yearly.  Ratings peaked in 2012, 2013 and 2014 and have remained pretty steady over the past few years.
+```{r echo=FALSE}
+summary(choco)
+
+USAchoc <- choco[(choco$Location == "U.S.A.") ,]
+##USAchoc
+
+USAbean <- USAchoc[(USAchoc$Bean_Origin == "U.S.A.") ,]
+#USAbean
+summary(USAbean)
+#unique(USAbean$Date)
+USAbeanCt1 <- table(USAbean$Date)
+barplot(USAbeanCt1, main="USA: Ratings Over Time", names.arg= c("2006", "2009", "2010", "2011", "2012", "2013", "2014", "2016", "2019", "2020"), ylab="Number of Ratings", xlab="Year")
+```
+
+The most commonly rated chocolate has a cocoa percentage of 70%, followed by 72%.
+
+```{r echo=FALSE}
+##unique(USAbean$Cocoa_Percent)
+USAbeanCt2 <- table(USAbean$Cocoa_Percent)
+##summary(USAbean$Cocoa_Percent)
+##USAbeanCt
+barplot(USAbeanCt2, main="USA: Cocoa Percent", names.arg= c("55", "60", "65", "67", "70", "71", "72", "73", "75", "85"), ylab="Number of Ratings", xlab="Cocoa Percent")
+          
+```
+
+Created box plots to show the ratings per cocoa percentage.  Chocolate with 67% and 75% have the most favorable rating of 3.75.
+
+```{r echo=FALSE}
+boxplot(USAbean$Rating~USAbean$Cocoa_Percent, main="USA: Cocoa Percent Rating", xlab="Cocao Percent", ylab = "Rating")
+```
+
