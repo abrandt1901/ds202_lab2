@@ -9,22 +9,68 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
-summary(cars)
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco)
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+1.	How are the ratings distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+hist <- hist(choco$Rating)
+box <- boxplot(choco$Rating)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+The histogram a shows that the data is skewed left and the boxplot shows that there are 4 outliers at ratings: 2,  1.75, 1.5, 1. The IQR is .5 showing the spread of the data is very smalling meaning most chocolates have a similar rating.
+
+
+2.	How does the number of ratings depend on the year? Draw a bar chart of the number of reports.
+```{r}
+rating <- table(choco$Date)
+barplot <- barplot(rating)
+```
+
+The amount of ratings had been increasing until 2015 when they peaked and they have been decreased since then. The amount of ratings for 2020 is incomplete and should be ignored.
+
+3. Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain.
+```{r}
+plot(choco$Cocoa_Percent, choco$Rating)
+abline(lm(choco$Rating~choco$Cocoa_Percent))
+```
+
+The rating appear to have some correlation between cacao percentage and rating. As the amount of cacao increases, the ratings decrease.
+
+4.	How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain.
+
+```{r}
+GoodChar <- choco[(choco$Rating >= 4) , ]
+sort(GoodChar$Characteristics1)
+sort(GoodChar$Characteristics2)
+sort(GoodChar$Characteristics3)
+sort(GoodChar$Characteristics4)
+BadChar <-  choco[(choco$Rating <= 1) , ]
+sort(BadChar$Characteristics1)
+sort(BadChar$Characteristics2)
+sort(BadChar$Characteristics3)
+sort(BadChar$Characteristics4)
+barplot(table(choco$Characteristics1, choco$Rating))
+
+```
+
+Of the ratings that are better than 4, some of the most frequent characteristics for good chocolate are creamy, nutty, cocoa, and intense. Of the ratings that are lower than 1, some of the most frequent characteristics are bitter, must, strong off flavor and chalky.
+
+
+5.	Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
+
+I want to see which location has the most high rated chocolate and which location has the lowest rated chocolate.
+```{r}
+GoodLoc <- choco[(choco$Rating >= 4) , ]
+sort(GoodLoc$Location)
+BadLoc <- choco[(choco$Rating <= 1) , ]
+sort(BadLoc$Location)
+barplot(table(choco$Location, choco$Rating))
+```
+
+The lowest rated chocolate comes from Belgium and the country with the most high rated chocolate is the U.S.A.
