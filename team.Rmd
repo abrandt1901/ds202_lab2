@@ -9,22 +9,47 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+<font size="6"> **Reading the Data:**
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco) 
 ```
 
-## Including Plots
+<font size="3"> **Analysis:  USA Chocolate**
 
-You can also embed plots, for example:
+I got the summary statistics for the dataset and saw that there are 2312 records.  I filtered the original data to include only those records where the  *Location* was *U.S.A* and stored the 966 records in USAchoch.  I further filtered the data to include only those records where the  *Bean Origin* was also in the *U.S.A and stored the 28 records in USAbean.  I got the summary statistics for USABean and created plots showing the number of ratings per yeary and by cocoa percentage.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+Ratings began in 2006 but have not been yearly.  Ratings peaked in 2012, 2013 and 2014 and have remained pretty steady over the past few years.
+
+```{r echo=FALSE}
+summary(choco)
+
+USAchoc <- choco[(choco$Location == "U.S.A.") ,]
+##USAchoc
+
+USAbean <- USAchoc[(USAchoc$Bean_Origin == "U.S.A.") ,]
+#USAbean
+summary(USAbean)
+#unique(USAbean$Date)
+USAbeanCt1 <- table(USAbean$Date)
+barplot(USAbeanCt1, main="USA: Ratings Over Time", names.arg= c("2006", "2009", "2010", "2011", "2012", "2013", "2014", "2016", "2019", "2020"), ylab="Number of Ratings", xlab="Year")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+The most commonly rated chocolate has a cocoa percentage of 70%, followed by 72%.
+
+```{r echo=FALSE}
+##unique(USAbean$Cocoa_Percent)
+USAbeanCt2 <- table(USAbean$Cocoa_Percent)
+##summary(USAbean$Cocoa_Percent)
+##USAbeanCt
+barplot(USAbeanCt2, main="USA: Cocoa Percent", names.arg= c("55", "60", "65", "67", "70", "71", "72", "73", "75", "85"), ylab="Number of Ratings", xlab="Cocoa Percent")
+          
+```
+
+Created box plots to show the ratings per cocoa percentage.  Chocolate with 67% and 75% have the most favorable rating of 3.75.
+
+```{r echo=FALSE}
+boxplot(USAbean$Rating~USAbean$Cocoa_Percent, main="USA: Cocoa Percent Rating", xlab="Cocao Percent", ylab = "Rating")
+```
+
