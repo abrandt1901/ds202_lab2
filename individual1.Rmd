@@ -64,7 +64,7 @@ Of the ratings that are better than 4, some of the most frequent characteristics
 
 5.	Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
 
-I want to see which location has the most high rated chocolate and which location has the lowest rated chocolate.
+I wanted to see which location has the most high rated chocolate and which location has the lowest rated chocolate.
 ```{r}
 GoodLoc <- choco[(choco$Rating >= 4) , ]
 sort(GoodLoc$Location)

@@ -18,6 +18,10 @@ str(choco)
 
 <font size="3"> **Analysis:  USA Chocolate**
 
+5.	Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
+
+Lisa McDaniel
+
 I got the summary statistics for the dataset and saw that there are 2312 records.  I filtered the original data to include only those records where the  *Location* was *U.S.A* and stored the 966 records in USAchoch.  I further filtered the data to include only those records where the  *Bean Origin* was also in the *U.S.A and stored the 28 records in USAbean.  I got the summary statistics for USABean and created plots showing the number of ratings per yeary and by cocoa percentage.
 
 Ratings began in 2006 but have not been yearly.  Ratings peaked in 2012, 2013 and 2014 and have remained pretty steady over the past few years.
@@ -52,4 +56,18 @@ Created box plots to show the ratings per cocoa percentage.  Chocolate with 67% 
 ```{r echo=FALSE}
 boxplot(USAbean$Rating~USAbean$Cocoa_Percent, main="USA: Cocoa Percent Rating", xlab="Cocao Percent", ylab = "Rating")
 ```
+
+Adam Brandt
+
+I wanted to see which location has the most high rated chocolate and which location has the lowest rated chocolate.
+```{r}
+GoodLoc <- choco[(choco$Rating >= 4) , ]
+sort(GoodLoc$Location)
+BadLoc <- choco[(choco$Rating <= 1) , ]
+sort(BadLoc$Location)
+barplot(table(choco$Location, choco$Rating))
+```
+
+The lowest rated chocolate comes from Belgium and the country with the most high rated chocolate is the U.S.A.
+
 
